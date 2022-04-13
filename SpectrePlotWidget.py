@@ -38,3 +38,6 @@ class SpectrePlotWidget(PlotWidget):
         self.axes.magnitude_spectrum(y, Fs=sample_rate, color='#1f77b4')
 
         self.view.draw()
+
+    def modulate(self, fs_signal_name, fs_amplitude, fs_frequency, fs_sample_rate, fs_duration, ss_signal_name, ss_amplitude, ss_frequency, ss_sample_rate, ss_duration):
+        pass

@@ -19,6 +19,12 @@ class MainWindow(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
+        self.amplitude_sensitivity_label = QLabel('Amplitude sensitivity', self)
+        self.amplitude_sensitivity_spin = QSpinBox()
+        self.amplitude_sensitivity_spin.setRange(0, 200_000)
+        self.amplitude_sensitivity_spin.setValue(1)
+        self.amplitude_sensitivity_label.setBuddy(self.amplitude_sensitivity_spin)
+
         self.fs_params_label = QLabel('First signal', self)
         self.fs_toggle_button = QPushButton('ON/OFF', self)
         self.fs_toggle_button.setCheckable(True)
@@ -57,6 +63,10 @@ class MainWindow(QWidget):
         self.fs_duration_spin.setValue(5)
         self.fs_duration_label = QLabel('Duration, sec')
         self.fs_duration_label.setBuddy(self.fs_duration_spin)
+
+        amplitude_sensitivity_layout = QHBoxLayout()
+        amplitude_sensitivity_layout.addWidget(self.amplitude_sensitivity_label)
+        amplitude_sensitivity_layout.addWidget(self.amplitude_sensitivity_spin)
 
         fs_params_layout = QVBoxLayout()
 
@@ -151,7 +161,7 @@ class MainWindow(QWidget):
         ss_duration_input_layout.addWidget(self.ss_duration_label)
         ss_duration_input_layout.addWidget(self.ss_duration_spin)
 
-        self.formula_label = QLabel()
+        # self.formula_label = QLabel()
 
         ss_params_layout.addLayout(ss_switch_layout)
         ss_params_layout.addLayout(ss_signal_form_layout)
@@ -171,9 +181,10 @@ class MainWindow(QWidget):
         self.receive_button = QPushButton('Receive')
 
         main_layout = QVBoxLayout()
+        main_layout.addLayout(amplitude_sensitivity_layout)
         main_layout.addLayout(params_layout)
         main_layout.addLayout(plots_layout)
-        main_layout.addWidget(self.formula_label)
+        # main_layout.addWidget(self.formula_label)
         # main_layout.addWidget(self.receive_button)
 
         self.setLayout(main_layout)
@@ -188,8 +199,10 @@ class MainWindow(QWidget):
             self.spectre_plot.clear()
             return
 
-        self.formula_label.setText('Formula')
-        self.formula_label.setWordWrap(True)
+        # self.formula_label.setText('Formula')
+        # self.formula_label.setWordWrap(True)
+
+        amplitude_sensitivity = self.amplitude_sensitivity_spin.value()
 
         fs_form_name = self.fs_signal_form_combo.currentText()
         fs_amplitude = self.fs_amplitude_spin.value()
@@ -202,6 +215,9 @@ class MainWindow(QWidget):
         ss_frequency = self.ss_frequency_spin.value()
         ss_sample_rate = self.ss_sample_rate_spin.value()
         ss_duration = self.ss_duration_spin.value()
+
+        if self.fs_toggle_button.isChecked() and self.ss_toggle_button.isChecked():
+            self.signal_plot.modulate(amplitude_sensitivity, fs_form_name, fs_amplitude, fs_frequency, fs_sample_rate, fs_duration, ss_form_name, ss_amplitude, ss_frequency, ss_sample_rate, ss_duration)
 
         if self.fs_toggle_button.isChecked():
             self.signal_plot.plot(fs_form_name, fs_amplitude, fs_frequency, fs_sample_rate, fs_duration)

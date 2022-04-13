@@ -38,3 +38,19 @@ class SignalPlotWidget(PlotWidget):
         self.axes.plot(x, y, color='#1f77b4')
 
         self.view.draw()
+
+    def modulate(self, modulation_sensitivity, fs_signal_name, fs_amplitude, fs_frequency, fs_sample_rate, fs_duration, ss_signal_name, ss_amplitude, ss_frequency, ss_sample_rate, ss_duration):
+        self.clear()
+
+        if fs_signal_name == '-' or ss_signal_name == '-':
+            return
+
+        fx, fy = wave_generators[fs_signal_name](fs_amplitude, fs_frequency, fs_sample_rate, fs_duration)
+        sx, sy = wave_generators[ss_signal_name](ss_amplitude, ss_frequency, ss_sample_rate, ss_duration)
+
+        my = ss_amplitude * (1 + modulation_sensitivity*fy)*sy
+
+        self.axes.plot(my, color='#1f77b4')
+
+        self.view.draw()
+
