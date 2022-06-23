@@ -217,15 +217,14 @@ class MainWindow(QWidget):
         ss_duration = self.ss_duration_spin.value()
 
         if self.fs_toggle_button.isChecked() and self.ss_toggle_button.isChecked():
-            self.signal_plot.modulate(amplitude_sensitivity, fs_form_name, fs_amplitude, fs_frequency, fs_sample_rate, fs_duration, ss_form_name, ss_amplitude, ss_frequency, ss_sample_rate, ss_duration)
-
-        if self.fs_toggle_button.isChecked():
-            self.signal_plot.plot(fs_form_name, fs_amplitude, fs_frequency, fs_sample_rate, fs_duration)
-            self.spectre_plot.plot(fs_form_name, fs_amplitude, fs_frequency, fs_sample_rate, fs_duration)
-
-        if self.ss_toggle_button.isChecked():
+            # self.signal_plot.modulate(amplitude_sensitivity, fs_form_name, fs_amplitude, fs_frequency, fs_sample_rate, fs_duration, ss_form_name, ss_amplitude, ss_frequency, ss_sample_rate, ss_duration)
+            self.signal_plot.polyharmonic(fs_form_name, fs_amplitude, fs_frequency, fs_sample_rate, fs_duration, ss_form_name, ss_amplitude, ss_frequency, ss_sample_rate, ss_duration)
+        elif self.ss_toggle_button.isChecked():
             self.signal_plot.plot(ss_form_name, ss_amplitude, ss_frequency, ss_sample_rate, ss_duration)
             self.spectre_plot.plot(ss_form_name, ss_amplitude, ss_frequency, ss_sample_rate, ss_duration)
+        elif self.fs_toggle_button.isChecked():
+            self.signal_plot.plot(fs_form_name, fs_amplitude, fs_frequency, fs_sample_rate, fs_duration)
+            self.spectre_plot.plot(fs_form_name, fs_amplitude, fs_frequency, fs_sample_rate, fs_duration)
 
 
 if __name__ == "__main__":
